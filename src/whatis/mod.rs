@@ -20,3 +20,16 @@ pub fn whatis(path: &Path) -> Result<Option<(FileType, Map<String, Value>)>> {
 
     Ok(None)
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use test_case::test_case;
+
+    #[test_case("testdata/Canon_40D.jpg" => FileType::JPEG)]
+    #[test_case("testdata/rustlogo.png" => FileType::PNG)]
+    fn test_match(path: &str) -> FileType {
+        let (file_type, _) = whatis(&Path::new(path)).unwrap().unwrap();
+        file_type
+    }
+}
