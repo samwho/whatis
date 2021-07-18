@@ -2,21 +2,21 @@ mod generic_image;
 mod jpeg;
 mod png;
 
-use std::path::PathBuf;
+use std::path::Path;
 
 use super::FileType;
 use serde_json::{Map, Value};
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
 
-type ExtractorFn = fn(&PathBuf) -> Result<Option<Map<String, Value>>>;
+type ExtractorFn = fn(&Path) -> Result<Option<Map<String, Value>>>;
 
 pub trait Extractor {
-    fn extract(&self, path: &PathBuf) -> Result<Option<Map<String, Value>>>;
+    fn extract(&self, path: &Path) -> Result<Option<Map<String, Value>>>;
 }
 
 impl Extractor for FileType {
-    fn extract(&self, path: &PathBuf) -> Result<Option<Map<String, Value>>> {
+    fn extract(&self, path: &Path) -> Result<Option<Map<String, Value>>> {
         let result = match self {
             FileType::JPEG => combine(&[generic_image::extractor, jpeg::extractor], path)?,
             FileType::PNG => combine(&[generic_image::extractor, png::extractor], path)?,
@@ -27,14 +27,14 @@ impl Extractor for FileType {
     }
 }
 
-fn combine(fns: &[ExtractorFn], path: &PathBuf) -> Result<Option<Map<String, Value>>> {
+fn combine(fns: &[ExtractorFn], path: &Path) -> Result<Option<Map<String, Value>>> {
     let mut ret: Option<Map<String, Value>> = None;
     for f in fns {
         if let Some(mut data) = f(path)? {
             if ret.is_none() {
                 ret = Some(data);
-            } else {
-                ret.as_mut().map(|m| m.append(&mut data));
+            } else if let Some(m) = ret.as_mut() {
+                m.append(&mut data);
             }
         }
     }

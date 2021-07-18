@@ -1,6 +1,6 @@
 use crate::whatis::{FileType, Result};
-use std::path::PathBuf;
+use std::path::Path;
 
-pub fn matcher(path: &PathBuf) -> Result<Option<FileType>> {
+pub fn matcher(_: &Path) -> Result<Option<FileType>> {
     Ok(None)
 }

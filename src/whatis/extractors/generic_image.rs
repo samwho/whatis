@@ -1,9 +1,9 @@
 use crate::whatis::Result;
 use image::GenericImageView;
 use serde_json::{Map, Value};
-use std::path::PathBuf;
+use std::path::Path;
 
-pub fn extractor(path: &PathBuf) -> Result<Option<Map<String, Value>>> {
+pub fn extractor(path: &Path) -> Result<Option<Map<String, Value>>> {
     let img = image::open(path)?;
     let mut data = Map::new();
 

@@ -1,5 +1,5 @@
 use crate::whatis::{FileType, Result};
-use std::path::PathBuf;
+use std::path::Path;
 
 impl From<infer::Type> for FileType {
     fn from(it: infer::Type) -> Self {
@@ -7,7 +7,7 @@ impl From<infer::Type> for FileType {
     }
 }
 
-pub fn matcher(path: &PathBuf) -> Result<Option<FileType>> {
+pub fn matcher(path: &Path) -> Result<Option<FileType>> {
     match infer::get_from_path(path)? {
         Some(infer_type) => Ok(Some(infer_type.into())),
         None => Ok(None),

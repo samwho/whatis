@@ -61,7 +61,7 @@ fn write_result<W: Write>(
 
     write!(w, "{}", "File type: ".bold())?;
     write!(w, "{}", format!("{:?}", file_type).green().bold())?;
-    write!(w, "\n")?;
+    writeln!(w)?;
 
     if !data.is_empty() && !opt.no_info {
         write!(w, "{}", "Information:\n".bold())?;
@@ -70,7 +70,7 @@ fn write_result<W: Write>(
             write_indent(w, 2)?;
             write_key(w, &k)?;
             write_value(w, v, 2)?;
-            write!(w, "\n")?;
+            writeln!(w)?;
         }
     }
     Ok(())
@@ -84,7 +84,7 @@ fn write_value<W: Write>(w: &mut W, value: Value, indent: usize) -> Result<()> {
         Value::String(s) => write!(w, "{}", s)?,
         Value::Array(a) => {
             for v in a {
-                write!(w, "\n")?;
+                writeln!(w)?;
                 write_indent(w, indent + 2)?;
                 write_value(w, v, indent + 2)?;
             }
@@ -92,7 +92,7 @@ fn write_value<W: Write>(w: &mut W, value: Value, indent: usize) -> Result<()> {
         }
         Value::Object(o) => {
             for (k, v) in o {
-                write!(w, "\n")?;
+                writeln!(w)?;
                 write_indent(w, indent + 2)?;
                 write_key(w, &k)?;
                 write_value(w, v, indent + 2)?;

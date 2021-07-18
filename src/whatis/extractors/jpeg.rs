@@ -3,9 +3,9 @@ use exif::parse_exif;
 use img_parts::jpeg::Jpeg;
 use img_parts::ImageEXIF;
 use serde_json::{Map, Value};
-use std::path::PathBuf;
+use std::path::Path;
 
-pub fn extractor(path: &PathBuf) -> Result<Option<Map<String, Value>>> {
+pub fn extractor(path: &Path) -> Result<Option<Map<String, Value>>> {
     let mut data = Map::new();
     let mut exif = Map::new();
     let jpeg = Jpeg::from_bytes(std::fs::read(path)?.into())?;
