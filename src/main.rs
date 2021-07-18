@@ -25,6 +25,9 @@ struct Opt {
 }
 
 fn main() -> Result<()> {
+    human_panic::setup_panic!();
+    env_logger::init();
+
     let opt = Opt::from_args();
 
     ensure!(opt.path.is_file(), "argument must be a file");

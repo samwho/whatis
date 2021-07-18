@@ -22,5 +22,11 @@ pub fn match_all(path: &Path) -> Result<HashSet<FileType>> {
         };
     }
 
+    if matches.is_empty() {
+        log::debug!("no FileType matches found");
+    } else {
+        log::debug!("matched to following FileTypes: {:?}", matches);
+    }
+
     Ok(matches)
 }

@@ -16,6 +16,8 @@ pub trait Extractor {
 
 impl Extractor for FileType {
     fn extract(&self, path: &Path) -> Result<Option<Map<String, Value>>> {
+        log::debug!("running extractor for FileType::{:?}", self);
+
         // If you're writing a new extractor, you want to add your extractor to
         // this match. If no arm exists for what you want to match, add one.
         let result = match self {

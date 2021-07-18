@@ -12,7 +12,13 @@ impl From<&str> for FileType {
         match s {
             "jpeg" | "jpg" | "image/jpeg" => JPEG,
             "png" | "image/png" => PNG,
-            _ => Unknown,
+            rest => {
+                log::debug!(
+                    "attempted to convert unknown string in to FileType: {}",
+                    rest
+                );
+                Unknown
+            }
         }
     }
 }

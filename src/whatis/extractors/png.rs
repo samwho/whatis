@@ -11,6 +11,8 @@ pub fn extractor(path: &Path) -> Result<Option<Map<String, Value>>> {
     let png = Png::from_bytes(std::fs::read(path)?.into())?;
 
     if let Some(buf) = png.exif() {
+        log::debug!("found EXIF data in PNG");
+
         let (fields, _) = parse_exif(&buf)?;
 
         for field in fields {
@@ -22,6 +24,8 @@ pub fn extractor(path: &Path) -> Result<Option<Map<String, Value>>> {
 
         data.insert("exif".to_string(), Value::Object(exif));
         return Ok(Some(data));
+    } else {
+        log::debug!("did not find EXIF data in PNG");
     }
 
     Ok(None)
